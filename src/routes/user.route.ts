@@ -3,7 +3,7 @@ import {
   createUser,
   getUserById,
   getUsers,
-} from "../controllers/userController";
+} from "../controllers/user.controller";
 
 export const userRoute = new Elysia({ prefix: "/users" })
   .get("/", getUsers)

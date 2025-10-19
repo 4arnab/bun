@@ -1,7 +1,7 @@
 import { Elysia } from "elysia";
 import { cors } from "@elysiajs/cors";
 import { swagger } from "@elysiajs/swagger";
-import { userRoute } from "./routes/userRoute";
+import { userRoute } from "./routes/user.route";
 
 const swaggerConfig = {
   documentation: {
