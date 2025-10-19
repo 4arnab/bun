@@ -1,28 +1,34 @@
-import figlet from "figlet";
 import { Elysia } from "elysia";
+import { cors } from "@elysiajs/cors";
+import { swagger } from "@elysiajs/swagger";
+import { userRoute } from "./routes/userRoute";
 
-const dummyData = [
-  { name: "Ahmed", age: 20 },
-  { name: "Ahmed", age: 20 },
-  { name: "Ahmed", age: 20 },
-  { name: "Ahmed", age: 20 },
-  { name: "Ahmed", age: 20 },
-  { name: "Ahmed", age: 20 },
-  { name: "Ahmed", age: 20 },
-];
+const swaggerConfig = {
+  documentation: {
+    info: {
+      title: "My bun + alysia API",
+      version: "1.0.0",
+      description: "This is just testing and learning purpose",
+    },
+    servers: [{ url: "http://localhost:9000", description: "Local Server" }],
+  },
+  path: "/swagger",
+};
+const app = new Elysia().use(cors()).use(swagger(swaggerConfig));
 
-const app = new Elysia();
-const PORT = 3000;
+app.use(userRoute);
+
+const PORT = Bun.env.PORT || 3000;
 
 app.get("/", () => "Hello from Elysia + Bun!");
-app.get("/api/status", (context) => {
-  return {
-    url: context.route,
-    headers: context.headers,
-    items: dummyData.length,
-    users: dummyData,
-  };
-});
+// app.get("/api/status", (context) => {
+//   return {
+//     url: context.route,
+//     headers: context.headers,
+//     items: users.length,
+//     users: users,
+//   };
+// });
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 // const server = Bun.serve({
