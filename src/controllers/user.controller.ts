@@ -1,10 +1,22 @@
+import { NotFoundError } from "elysia";
+import { prisma } from "../db/prisma.db";
+
 const users = [
   { id: 1, name: "Ahmed", age: 20 },
   { id: 2, name: "Alia", age: 24 },
 ];
 
 // Controller functions
-export const getUsers = () => {
+export const getUsers = async () => {
+  const users = await prisma.user.findMany({
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      _count: true,
+    },
+  });
+  if (!users.length) throw new NotFoundError("Users not found");
   return users;
 };
 

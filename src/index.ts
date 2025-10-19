@@ -2,6 +2,8 @@ import { Elysia } from "elysia";
 import { cors } from "@elysiajs/cors";
 import { swagger } from "@elysiajs/swagger";
 import { userRoute } from "./routes/user.route";
+import { userErrorHandler } from "./middlewares/error.middleware";
+import { useLogger } from "./middlewares/logger";
 
 const swaggerConfig = {
   documentation: {
@@ -16,19 +18,14 @@ const swaggerConfig = {
 };
 const app = new Elysia().use(cors()).use(swagger(swaggerConfig));
 
-app.use(userRoute);
+userErrorHandler(app);
+useLogger(app);
+
+app.group("/api", (app) => app.use(userRoute));
 
 const PORT = Bun.env.PORT || 3000;
 
 app.get("/", () => "Hello from Elysia + Bun!");
-// app.get("/api/status", (context) => {
-//   return {
-//     url: context.route,
-//     headers: context.headers,
-//     items: users.length,
-//     users: users,
-//   };
-// });
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 // const server = Bun.serve({

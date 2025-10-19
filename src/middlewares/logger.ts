@@ -1,14 +1,7 @@
 import { Elysia, type Context } from "elysia";
 
-export const logger = new Elysia().onBeforeHandle(async (context: Context, next) => {
-  const start = Date.now();
-
-  await next();
-
-  const end = Date.now();
-  const { method, url } = context.request;
-
-  console.log(
-    `[${new Date().toLocaleString()}] ${method} ${url} -> (${end - start}ms)`
-  );
-});
+export const useLogger = (app: Elysia) => {
+  app.onBeforeHandle(async (c: Context) => {
+    console.log(`[${c.request.method}] ${c.request.url} - ${c.set.status}`);
+  });
+};
